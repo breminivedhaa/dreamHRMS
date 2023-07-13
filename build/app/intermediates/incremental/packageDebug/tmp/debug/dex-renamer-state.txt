@@ -1,0 +1,4 @@
+#Thu Jul 13 16:31:52 IST 2023
+base.0=/Users/dreamsadmin/AndroidStudioProjects/dreamHRMS/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
