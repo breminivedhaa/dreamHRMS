@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:localization/localization.dart';
 
 
 void main() async {
-  // await GetStorage.init();
+  await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
   Sodium.init();
   runApp(MediaQuery(

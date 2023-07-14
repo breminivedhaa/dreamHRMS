@@ -19,6 +19,5 @@ class LibSodiumAlgorithm {
 
     _encryptedMessage = Sodium.bin2hex(encrypted);
     return _encryptedMessage;
-    print("Encrypted Message $_encryptedMessage");
   }
 }

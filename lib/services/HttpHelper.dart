@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dreamhrms/services/utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../exception.dart';
 
-class HttpHelper {
+class HttpHelper extends GetxController {
   Future<dynamic> get(
     String url, {
     bool auth = false,
@@ -110,34 +112,31 @@ class HttpHelper {
     return headers;
   }
 
+  BuildContext? context = Get.context;
   multipartPostData(
       {String method = "POST",
       required String url,
       // required Map<String, dynamic> body,
       bool auth = false,
-      required String encrypt}) async {
+      required String encryptMessage}) async {
     Map<String, String> hd = await getHeaders(auth, contentHeader: false);
     var responseJson;
     try {
-      print("encrypt data $encrypt");
+      print("encrypt data $encryptMessage");
       var request = http.MultipartRequest('POST', Uri.parse(url));
       // request.headers.addAll({"Content-Type":"multipart/form-data"});
-      request.fields["request_data"] = encrypt;
-
-      // var request = http.MultipartRequest('POST', Uri.parse("https://velankanni.dreamguystech.com/api/appuser/login"));
-      // request.headers.addAll({"token":"DQCTPQMKK9R6SXN4"});
-      // request.fields["username"] = "admin";
-      // request.fields["password"] = "Velankanni@246";
-      // request.fields["device_id"] = "fdfdfdfd";
-
+      request.fields["request_data"] = encryptMessage;
       var res = await request.send();
-      print("res${res.statusCode}");
-      String result = await res.stream.bytesToString();
-      print(result);
-      print(res);
+      print("res${res}");
+      var result = await res.stream.bytesToString();
+      var jsonResponse = json.decode(result); // Parse response into JSON
+      print("result ${jsonResponse['message']}");
+      return jsonResponse;
     } on SocketException {
       // throw FetchDataException(
       //     '', 500);    }
+      UtilService()
+          .showToast(context, "error", message: responseJson.toString());
       debugPrint("onSocket Exception ${responseJson.toString()}");
       return responseJson;
     }

@@ -1,12 +1,7 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:dreamhrms/controller/login_controller.dart';
 import 'package:dreamhrms/screen/sign_up.dart';
 import 'package:dreamhrms/widgets/common_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sodium/flutter_sodium.dart';
-
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:localization/localization.dart';
@@ -15,7 +10,6 @@ import '../colors.dart';
 import '../widgets/Custom_rich_text.dart';
 import '../widgets/Custom_text.dart';
 import '../widgets/common_textformfield.dart';
-import 'encrypt.dart';
 import 'forgot_password.dart';
 import 'main_screen.dart';
 
@@ -192,9 +186,9 @@ class Login extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   // textAlign: TextAlign.center,
                   onPressed: () {
-                    // LoginController.to.login();
+                    LoginController.to.login();
                     // Get.to(() => Encrypt());
-                    Get.to(() => MainScreen());
+                    // Get.to(() => MainScreen());
                   },
                 ),
               ),

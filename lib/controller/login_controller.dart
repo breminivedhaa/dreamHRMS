@@ -4,16 +4,19 @@ import 'package:dreamhrms/repository/login_repository.dart';
 import 'package:dreamhrms/screen/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/HttpHelper.dart';
 import '../services/api_service.dart';
+import '../services/utils.dart';
 import '../widgets/encrypt_decrypt.dart';
 
 class LoginController extends GetxController {
   static LoginController get to => Get.put(LoginController());
   static final HttpHelper _http = HttpHelper();
   var repository=LoginRepository();
-
+  late LoginModel loginModel;
   TextEditingController userEmail=TextEditingController();
   TextEditingController password=TextEditingController();
 
@@ -29,24 +32,35 @@ class LoginController extends GetxController {
     userEmail.text="";
     password.text="";
   }
-
+  BuildContext? context = Get.context;
+  final box=GetStorage();
+  var token;
   login() async {
-    var data={
-      "email_id":"saranya@dreamguys.com",
-      "password":"123456"
-    };
-    // var body={
-    //    "request_data":  await LibSodiumAlgorithm().encryptionMessage(data)
-    // };
-    // print("Encrypted Body: $body");
-    LoginModel? loginModel;
+    userEmail.text="saranya@dreamguys.com";
+    password.text="123456";
+    var body = {"email_id": userEmail.text, "password": password.text};
     var response = await _http.multipartPostData(
         url: "${Api.login}",
-        encrypt:await LibSodiumAlgorithm().encryptionMessage(data),
+        encryptMessage: await LibSodiumAlgorithm().encryptionMessage(body),
         auth: false);
-    print('sucess =====$response');
-   
+    print("controller ${response}");
+    if(response['code']=="200"){
+      loginModel = LoginModel.fromJson(response);
+      box.write("Token", "${loginModel.data?.original?.tokenType} ${loginModel.data?.original?.accessToken}");
+      token = box.read('Token');
+      print("Login token $token");
+      UtilService().showToast(context,"success",message:response['message'].toString());
+    }else{
+      UtilService().showToast(context,"error",message:response['code'].toString());
+    }
+    print('success =====$response');
   }
 
-
+  storeToLocalDevice({required Map body}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    body.forEach((i, value) {
+      print('index=$i, value=$value');
+      prefs.setString(i, value);
+    });
+  }
 }
