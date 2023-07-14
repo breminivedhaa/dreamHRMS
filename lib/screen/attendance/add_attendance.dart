@@ -1,4 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:dreamhrms/screen/attendance/add_attendance_tabs/dependency_screen.dart';
+import 'package:dreamhrms/screen/attendance/add_attendance_tabs/documents_screen.dart';
+import 'package:dreamhrms/screen/attendance/add_attendance_tabs/educational_screen.dart';
+import 'package:dreamhrms/screen/attendance/add_attendance_tabs/employee_screen.dart';
+import 'package:dreamhrms/screen/attendance/add_attendance_tabs/personal_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -14,7 +18,6 @@ class AddAttendance extends StatefulWidget {
 }
 
 class _AddAttendanceState extends State<AddAttendance> {
-
   TabController? tabController;
 
   @override
@@ -42,57 +45,69 @@ class _AddAttendanceState extends State<AddAttendance> {
             ],
           ),
           bottom: TabBar(
-            controller: tabController,
-            onTap: (value){
-              setState(() {
-              });
-            },
+              controller: tabController,
+              onTap: (value) {
+                setState(() {});
+              },
               isScrollable: true,
               unselectedLabelColor: AppColors.grey,
-              labelColor: Colors.blue,
+              labelColor: AppColors.blue,
+              indicatorColor: AppColors.blue,
               tabs: [
-            Tab(
-              child: Row(
-                children: [
-                  SvgPicture.asset('assets/icons/person.svg', color: tabController?.index == 0 ? Colors.blue : AppColors.grey,),
-                  Text("Personal")
-                ],
-              ),
-            ),
-            Tab(
-              child: Row(
-                children: [
-                  SvgPicture.asset('assets/icons/userCircle.svg'),
-                  Text("Employee")
-                ],
-              ),
-            ),
-            Tab(
-              child: Row(
-                children: [
-                  SvgPicture.asset('assets/icons/users.svg'),
-                  Text("Dependency")
-                ],
-              ),
-            ),
-            Tab(
-              child: Row(
-                children: [
-                  SvgPicture.asset('assets/icons/education.svg'),
-                  Text("Educational")
-                ],
-              ),
-            ),
-            Tab(
-              child: Row(
-                children: [
-                  SvgPicture.asset('assets/icons/files.svg'),
-                  Text("Documents")
-                ],
-              ),
-            )
-          ]),
+                Tab(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/person.svg',
+                        color: tabController?.index == 0
+                            ? AppColors.blue
+                            : AppColors.grey,
+                      ),
+                      Text("Personal")
+                    ],
+                  ),
+                ),
+                Tab(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/userCircle.svg'),
+                      Text("Employee")
+                    ],
+                  ),
+                ),
+                Tab(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/users.svg'),
+                      Text("Dependency")
+                    ],
+                  ),
+                ),
+                Tab(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/education.svg'),
+                      Text("Educational")
+                    ],
+                  ),
+                ),
+                Tab(
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/icons/files.svg'),
+                      Text("Documents")
+                    ],
+                  ),
+                )
+              ]),
         ),
+        body: TabBarView(children: [
+          PersonalScreen(),
+          EmployeeScreen(),
+          DependencyScreen(),
+          EducationalScreen(),
+          DocumentsScreen()
+        ]),
       ),
     );
   }
